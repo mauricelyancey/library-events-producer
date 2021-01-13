@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LibraryEventsController {
     @PostMapping("/v1/libraryevent")
-    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libaryEvent){
+    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent){
 
         //invoke kafka producer
-        return ResponseEntity.status(HttpStatus.CREATED).body(libaryEvent);
+        return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
 }
