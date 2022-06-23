@@ -1,4 +1,4 @@
-package com.learnkafka.learnkafka.Controller;
+package com.learnkafka.learnkafka.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.learnkafka.learnkafka.producer.LibraryEventProducer;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -23,7 +24,7 @@ public class LibraryEventsController {
     LibraryEventProducer libraryEventProducer;
 
     @PostMapping("/v1/libraryevent")
-    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+    public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
         //invoke kafka producer
         libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         libraryEventProducer.sendLibraryEventUsingProducerRecord(libraryEvent);
