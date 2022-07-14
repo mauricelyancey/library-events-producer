@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +30,15 @@ public class LibraryEventsController {
         libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         libraryEventProducer.sendLibraryEventUsingProducerRecord(libraryEvent);
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
+    }
+    @PutMapping("/v1/libraryevent")
+    public ResponseEntity<?> putLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
+        //invoke kafka producer
+        if(libraryEvent.getLibraryEventId()==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please pass the LibraryEventId");
+        }
+        libraryEvent.setLibraryEventType(LibraryEventType.UPDATE);
+        libraryEventProducer.sendLibraryEventUsingProducerRecord(libraryEvent);
+        return ResponseEntity.status(HttpStatus.OK).body(libraryEvent);
     }
 }
